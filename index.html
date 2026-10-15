@@ -29,19 +29,29 @@
                             50: '#eff6ff',
                             100: '#dbeafe',
                             500: '#3b82f6',
-                            600: '#2563eb', // Blue Accent
+                            600: '#2563eb',
                             700: '#1d4ed8',
                         },
                         secondary: {
-                            500: '#eab308', // Yellow/Orange Accent
+                            500: '#eab308',
                             600: '#ca8a04',
                         },
-                        bgLight: '#f3f4f6' // Light Gray Background
+                        bgLight: '#f8fafc'
                     },
                     boxShadow: {
-                        'card': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-                        'card-hover': '0 10px 40px -5px rgba(37, 99, 235, 0.15)',
-                        'banner': '0 20px 40px -10px rgba(0,0,0,0.1)',
+                        'soft': '0 4px 40px -2px rgba(0, 0, 0, 0.04)',
+                        'hover-soft': '0 15px 50px -5px rgba(37, 99, 235, 0.12)',
+                        'glow': '0 0 40px -10px rgba(37, 99, 235, 0.4)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
                     }
                 }
             }
@@ -50,62 +60,117 @@
     
     <style>
         body {
-            background-color: #f8fafc; /* Strict light mode background */
-            color: #1f2937; /* Dark gray text for readability */
+            background-color: #f8fafc;
+            color: #0f172a; /* Slate 900 for premium contrast */
         }
         
-        /* Glassmorphism Header */
+        /* Modern Glassmorphism Header */
         .glass-header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         }
+
+        /* Modern Mesh Gradient Background for Hero */
+        .bg-mesh {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 10% 20%, hsla(228,100%,74%,0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, hsla(189,100%,56%,0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, hsla(355,100%,93%,0.15) 0px, transparent 50%);
+        }
+
+        /* --- PRELOADER CUSTOM ANIMATION --- */
+        @keyframes spin-reverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+        .animate-spin-reverse {
+            animation: spin-reverse 5s linear infinite;
+        }
+        .preloader-hide {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px) scale(0.98);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Hide scrollbar for cleaner look on some elements if needed */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden selection:bg-primary-500 selection:text-white flex flex-col min-h-screen">
 
+    <!-- 0. PRELOADER SCREEN KEREN -->
+    <div id="preloader" class="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center transition-all duration-700 ease-in-out">
+        <div class="relative flex items-center justify-center w-32 h-32 mb-8">
+            <!-- Sleek Glow Rings -->
+            <div class="absolute inset-0 rounded-full border border-primary-100 bg-primary-50/30 animate-ping" style="animation-duration: 2s;"></div>
+            <div class="absolute inset-2 rounded-full border-[3px] border-transparent border-t-primary-600 border-r-primary-400 animate-spin" style="animation-duration: 1.5s;"></div>
+            <div class="absolute inset-5 rounded-full border-[3px] border-transparent border-b-secondary-500 border-l-secondary-300 animate-spin-reverse" style="animation-duration: 2s;"></div>
+            <!-- Center Logo Premium -->
+            <div class="w-16 h-16 rounded-full overflow-hidden shadow-xl bg-white flex items-center justify-center z-10">
+                <img src="https://i.ibb.co.com/Lz9Hz3Hz/20260811-081242.png" alt="Loading Noura Cell" class="w-full h-full object-cover">
+            </div>
+        </div>
+        <!-- Text Animation -->
+        <h2 class="text-xl font-extrabold text-slate-800 tracking-[0.2em] uppercase mb-3">
+            NOURA <span class="text-primary-600">CELL</span>
+        </h2>
+        <div class="flex items-center gap-2 text-slate-400 text-sm font-medium">
+            <span class="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></span>
+            <span class="w-2 h-2 bg-secondary-500 rounded-full animate-pulse" style="animation-delay: 0.2s;"></span>
+            <span class="w-2 h-2 bg-primary-500 rounded-full animate-pulse" style="animation-delay: 0.4s;"></span>
+        </div>
+    </div>
+    <!-- END PRELOADER -->
+
     <!-- 1. Sticky Header -->
-    <header class="fixed w-full top-0 z-50 glass-header transition-all duration-300 shadow-sm" id="navbar">
+    <header class="fixed w-full top-0 z-50 glass-header transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <!-- Brand & Logo -->
                 <a href="#" class="flex-shrink-0 flex items-center gap-3 cursor-pointer group">
-                    <div class="relative w-12 h-12 rounded-full overflow-hidden shadow-md border-2 border-white group-hover:scale-105 transition-transform duration-300 bg-white flex items-center justify-center">
-                        <img src="https://i.ibb.co.com/Lz9Hz3Hz/20260811-081242.png" alt="Logo Noura Cell" class="w-full h-full object-cover">
+                    <div class="relative w-11 h-11 rounded-xl overflow-hidden shadow-sm border border-white group-hover:shadow-glow transition-all duration-500 bg-white flex items-center justify-center">
+                        <img src="https://i.ibb.co.com/Lz9Hz3Hz/20260811-081242.png" alt="Logo Noura Cell" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
-                    <span class="font-extrabold text-2xl tracking-tight text-gray-900">
+                    <!-- TULISAN CELL DIPERBAIKI: Mengembalikan warna solid -->
+                    <span class="font-extrabold text-2xl tracking-tight text-slate-900">
                         NOURA <span class="text-primary-600">CELL</span>
                     </span>
                 </a>
                 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="#beranda" class="text-gray-600 hover:text-primary-600 font-semibold transition-colors">Beranda</a>
-                    <a href="#layanan" class="text-gray-600 hover:text-primary-600 font-semibold transition-colors">Layanan Kami</a>
-                    <a href="#tentang" class="text-gray-600 hover:text-primary-600 font-semibold transition-colors">Tentang Kami</a>
-                    <a href="#kontak" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-lg"></i> Hubungi Kami
+                    <a href="#beranda" class="text-slate-600 hover:text-primary-600 font-medium transition-colors text-sm uppercase tracking-wide">Beranda</a>
+                    <a href="#layanan" class="text-slate-600 hover:text-primary-600 font-medium transition-colors text-sm uppercase tracking-wide">Layanan Kami</a>
+                    <a href="#tentang" class="text-slate-600 hover:text-primary-600 font-medium transition-colors text-sm uppercase tracking-wide">Tentang Kami</a>
+                    <a href="#kontak" class="relative overflow-hidden bg-slate-900 text-white px-7 py-2.5 rounded-full font-semibold transition-all duration-300 shadow-[0_8px_20px_-6px_rgba(15,23,42,0.5)] hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2 group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <i class="fa-brands fa-whatsapp text-lg relative z-10 text-green-400 group-hover:text-white transition-colors"></i> 
+                        <span class="relative z-10">Hubungi Kami</span>
                     </a>
                 </nav>
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-gray-700 hover:text-primary-600 focus:outline-none p-2 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                    <button id="mobile-menu-button" class="text-slate-700 hover:text-primary-600 focus:outline-none p-2.5 rounded-xl bg-white shadow-sm border border-slate-100 transition-colors">
+                        <i class="fa-solid fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
         </div>
         
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full left-0">
-            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
-                <a href="#beranda" class="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50">Beranda</a>
-                <a href="#layanan" class="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50">Layanan Kami</a>
-                <a href="#tentang" class="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 hover:text-primary-600 hover:bg-primary-50">Tentang Kami</a>
-                <a href="#kontak" class="mt-4 w-full bg-primary-600 text-white text-center px-4 py-3.5 rounded-xl font-bold shadow-md flex items-center justify-center gap-2 active:bg-primary-700">
-                    <i class="fa-brands fa-whatsapp text-xl"></i> Hubungi Sekarang
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 shadow-2xl absolute w-full left-0">
+            <div class="px-5 pt-4 pb-8 space-y-3 flex flex-col">
+                <a href="#beranda" class="block px-4 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-slate-50 transition-colors">Beranda</a>
+                <a href="#layanan" class="block px-4 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-slate-50 transition-colors">Layanan Kami</a>
+                <a href="#tentang" class="block px-4 py-3.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-primary-600 hover:bg-slate-50 transition-colors">Tentang Kami</a>
+                <a href="#kontak" class="mt-4 w-full bg-slate-900 hover:bg-slate-800 text-white text-center px-4 py-4 rounded-xl font-semibold shadow-md flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-brands fa-whatsapp text-green-400 text-xl"></i> Hubungi Sekarang
                 </a>
             </div>
         </div>
@@ -113,54 +178,62 @@
 
     <main class="flex-grow">
         <!-- 2. Hero Banner Section -->
-        <section id="beranda" class="pt-28 pb-10 sm:pt-32 sm:pb-16 bg-gradient-to-b from-blue-50/50 to-transparent">
-            <div class="max-w-7xl mx-auto px-3 sm:px-10 lg:px-14">
-                <!-- Decorative background elements -->
-                <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
-                    <div class="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
-                    <div class="absolute top-40 right-10 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
-                </div>
-
-                <div class="relative group">
-                    <!-- Glow effect behind banner -->
-                    <div class="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-[2rem] sm:rounded-[2.5rem] opacity-100 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 -z-10"></div>
+        <section id="beranda" class="pt-32 pb-16 sm:pt-40 sm:pb-24 bg-mesh relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="relative group max-w-5xl mx-auto flex flex-col items-center">
                     
-                    <!-- Main Hero Image -->
-                    <div class="relative bg-white rounded-3xl sm:rounded-[2rem] p-1.5 sm:p-2 shadow-banner border border-white">
+                    <!-- Main Hero Image with Modern Framing -->
+                    <div class="relative w-full rounded-[2rem] sm:rounded-[2.5rem] p-2 bg-white/40 backdrop-blur-md border border-white/60 shadow-2xl animate-float">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-primary-500/20 to-secondary-500/20 rounded-[2rem] blur-2xl -z-10 group-hover:blur-3xl transition-all duration-700"></div>
+                        
                         <img 
                             src="https://i.ibb.co.com/zHTb80wR/20260907-142629.jpg" 
                             alt="Promo Banner Noura Cell - Service HP, Pulsa, dan Layanan Digital" 
-                            class="w-full h-auto rounded-[1.5rem] sm:rounded-[1.8rem] object-cover object-center shadow-inner"
+                            class="w-full h-auto rounded-[1.5rem] sm:rounded-[2rem] object-cover object-center shadow-[inset_0_0_20px_rgba(0,0,0,0.05)]"
                         >
                     </div>
                 </div>
 
-                <!-- Trust Badges below banner -->
-                <div class="mt-8 flex flex-wrap justify-center gap-4 sm:gap-8 text-sm sm:text-base font-semibold text-gray-600">
-                    <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
-                        <i class="fa-solid fa-shield-halved text-primary-500"></i> Aman & Terpercaya
+                <!-- TAMBAHAN LINK: MAU JUALAN PULSA (Di Bawah Banner) -->
+                <div class="mt-8 flex justify-center relative z-20">
+                    <a href="https://mitra.buylink.id/signup?ref=FARKHX" target="_blank" class="group relative inline-flex items-center justify-center px-8 py-3.5 font-bold text-white transition-all duration-300 bg-gradient-to-r from-primary-600 to-secondary-500 rounded-full shadow-lg hover:shadow-[0_10px_40px_-10px_rgba(37,99,235,0.5)] hover:-translate-y-1 gap-3 overflow-hidden">
+                        <span class="relative z-10 tracking-wide text-sm sm:text-base">MAU JUALAN PULSA? KLIK DISINI..!!!</span>
+                        <i class="fa-solid fa-arrow-right relative z-10 transform group-hover:translate-x-1.5 transition-transform"></i>
+                    </a>
+                </div>
+                <!-- AKHIR TAMBAHAN LINK -->
+
+                <!-- Trust Badges below banner (DIPERBAIKI: Dibuat lebih compact agar tidak berantakan di mobile) -->
+                <div class="mt-8 flex flex-wrap justify-center gap-3 sm:gap-6 text-sm sm:text-base">
+                    <div class="flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-5 py-2.5 rounded-full shadow-soft border border-slate-100 hover:-translate-y-1 transition-transform duration-300">
+                        <i class="fa-solid fa-shield-halved text-primary-500"></i>
+                        <span class="text-slate-700 font-semibold">Aman & Terpercaya</span>
                     </div>
-                    <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
-                        <i class="fa-solid fa-clock text-secondary-500"></i> Proses Cepat
+                    <div class="flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-5 py-2.5 rounded-full shadow-soft border border-slate-100 hover:-translate-y-1 transition-transform duration-300">
+                        <i class="fa-solid fa-bolt text-secondary-500"></i>
+                        <span class="text-slate-700 font-semibold">Proses Cepat</span>
                     </div>
-                    <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
-                        <i class="fa-solid fa-thumbs-up text-primary-500"></i> Kualitas Premium
+                    <div class="flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-5 py-2.5 rounded-full shadow-soft border border-slate-100 hover:-translate-y-1 transition-transform duration-300">
+                        <i class="fa-solid fa-gem text-green-500"></i>
+                        <span class="text-slate-700 font-semibold">Kualitas Premium</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- 3. Services Grid Section -->
-        <section id="layanan" class="py-16 sm:py-24 bg-white relative">
+        <section id="layanan" class="py-20 sm:py-28 bg-white relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <!-- Section Header -->
-                <div class="text-center max-w-3xl mx-auto mb-16">
-                    <span class="text-primary-600 font-bold tracking-wider uppercase text-sm mb-3 block">Layanan Utama Kami</span>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
-                        Solusi Kebutuhan Digital <br class="hidden sm:block"> & Perbaikan Handphone Anda
+                <div class="text-center max-w-3xl mx-auto mb-20">
+                    <span class="inline-block py-1 px-3 rounded-full bg-primary-50 text-primary-600 font-bold tracking-widest uppercase text-xs mb-4 border border-primary-100">
+                        Layanan Kami
+                    </span>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight leading-tight">
+                        Solusi Kebutuhan Digital <br class="hidden sm:block"> & <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-500">Perbaikan Gadget</span>
                     </h2>
-                    <p class="text-gray-500 text-lg sm:text-xl">
+                    <p class="text-slate-500 text-lg sm:text-xl font-light">
                         Noura Cell menyediakan berbagai layanan terlengkap, tercepat, dan bergaransi dalam satu tempat.
                     </p>
                 </div>
@@ -169,80 +242,80 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     
                     <!-- Card 1: Jualan Pulsa -->
-                    <div class="group bg-white p-8 rounded-[2rem] shadow-card hover:shadow-card-hover border border-gray-100 hover:border-primary-200 transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out -z-10"></div>
-                        <div class="w-16 h-16 bg-white text-primary-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm border border-blue-100 group-hover:bg-primary-600 group-hover:text-white transition-colors duration-300">
+                    <div class="group bg-white p-8 rounded-[2rem] shadow-soft hover:shadow-hover-soft border border-slate-100 transition-all duration-500 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 relative z-10">
                             <i class="fa-solid fa-mobile-screen-button"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Jualan Pulsa All Operator</h3>
-                        <p class="text-gray-500 leading-relaxed text-sm sm:text-base">
-                            Isi ulang pulsa reguler, paket data internet cepat, telpon & SMS untuk semua provider (Telkomsel, Indosat, XL, Tri, Smartfren) dengan harga terbaik.
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 relative z-10">Jualan Pulsa All Operator</h3>
+                        <p class="text-slate-500 leading-relaxed text-sm relative z-10">
+                            Isi ulang pulsa reguler, paket data internet cepat, telpon & SMS untuk semua provider dengan harga terbaik.
                         </p>
                     </div>
 
                     <!-- Card 2: Token Listrik -->
-                    <div class="group bg-white p-8 rounded-[2rem] shadow-card hover:shadow-card-hover border border-gray-100 hover:border-yellow-200 transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-yellow-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out -z-10"></div>
-                        <div class="w-16 h-16 bg-white text-secondary-500 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm border border-yellow-100 group-hover:bg-secondary-500 group-hover:text-white transition-colors duration-300">
+                    <div class="group bg-white p-8 rounded-[2rem] shadow-soft hover:shadow-hover-soft border border-slate-100 transition-all duration-500 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-50/0 to-yellow-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="w-14 h-14 bg-yellow-50 text-yellow-500 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-yellow-500 group-hover:text-white transition-all duration-500 relative z-10">
                             <i class="fa-solid fa-bolt"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Token Listrik & PPOB</h3>
-                        <p class="text-gray-500 leading-relaxed text-sm sm:text-base">
-                            Beli token listrik PLN anti ribet. Melayani juga pembayaran tagihan air PDAM, BPJS, Indihome, dan angsuran lainnya dengan cepat dan aman.
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 relative z-10">Token Listrik & PPOB</h3>
+                        <p class="text-slate-500 leading-relaxed text-sm relative z-10">
+                            Beli token listrik PLN anti ribet. Melayani juga pembayaran tagihan air PDAM, BPJS, Indihome, dan angsuran lainnya.
                         </p>
                     </div>
 
                     <!-- Card 3: Transfer & E-Wallet -->
-                    <div class="group bg-white p-8 rounded-[2rem] shadow-card hover:shadow-card-hover border border-gray-100 hover:border-green-200 transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-green-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out -z-10"></div>
-                        <div class="w-16 h-16 bg-white text-green-500 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm border border-green-100 group-hover:bg-green-500 group-hover:text-white transition-colors duration-300">
+                    <div class="group bg-white p-8 rounded-[2rem] shadow-soft hover:shadow-hover-soft border border-slate-100 transition-all duration-500 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/0 to-green-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="w-14 h-14 bg-green-50 text-green-500 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-green-500 group-hover:text-white transition-all duration-500 relative z-10">
                             <i class="fa-solid fa-money-bill-transfer"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Transfer Bank & Topup</h3>
-                        <p class="text-gray-500 leading-relaxed text-sm sm:text-base">
-                            Kirim uang ke semua rekening Bank Nasional dan Top Up saldo E-Wallet (Dana, OVO, Gopay, ShopeePay, LinkAja) dengan biaya admin yang sangat murah.
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 relative z-10">Transfer Bank & Topup</h3>
+                        <p class="text-slate-500 leading-relaxed text-sm relative z-10">
+                            Kirim uang ke rekening Nasional dan Top Up E-Wallet (Dana, OVO, Gopay, ShopeePay) dengan admin sangat murah.
                         </p>
                     </div>
 
                     <!-- Card 4: Service HP -->
-                    <div class="group bg-white p-8 rounded-[2rem] shadow-card hover:shadow-card-hover border border-gray-100 hover:border-red-200 transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden sm:col-span-2 lg:col-span-1">
-                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-red-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out -z-10"></div>
-                        <div class="flex justify-between items-start mb-6">
-                            <div class="w-16 h-16 bg-white text-red-500 rounded-2xl flex items-center justify-center text-3xl shadow-sm border border-red-100 group-hover:bg-red-500 group-hover:text-white transition-colors duration-300">
+                    <div class="group bg-white p-8 rounded-[2rem] shadow-soft hover:shadow-hover-soft border border-slate-100 transition-all duration-500 hover:-translate-y-2 cursor-pointer relative overflow-hidden sm:col-span-2 lg:col-span-1">
+                        <div class="absolute inset-0 bg-gradient-to-br from-red-50/0 to-red-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="flex justify-between items-start mb-6 relative z-10">
+                            <div class="w-14 h-14 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 group-hover:bg-red-500 group-hover:text-white transition-all duration-500">
                                 <i class="fa-solid fa-screwdriver-wrench"></i>
                             </div>
-                            <span class="bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Spesialis</span>
+                            <span class="bg-red-50 border border-red-100 text-red-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Spesialis</span>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Service HP Bergaransi</h3>
-                        <p class="text-gray-500 leading-relaxed text-sm sm:text-base">
-                            Spesialis ganti LCD, layar pecah, ganti baterai, konektor cas, mati total, hingga perbaikan software (lupa sandi/pola) untuk berbagai merk HP.
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 relative z-10">Service HP Bergaransi</h3>
+                        <p class="text-slate-500 leading-relaxed text-sm relative z-10">
+                            Spesialis ganti LCD, layar pecah, ganti baterai, mati total, hingga perbaikan software (lupa sandi/pola) semua merk HP.
                         </p>
                     </div>
 
                     <!-- Card 5: Service Laptop -->
-                    <div class="group bg-white p-8 rounded-[2rem] shadow-card hover:shadow-card-hover border border-gray-100 hover:border-indigo-200 transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out -z-10"></div>
-                        <div class="w-16 h-16 bg-white text-indigo-500 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm border border-indigo-100 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
+                    <div class="group bg-white p-8 rounded-[2rem] shadow-soft hover:shadow-hover-soft border border-slate-100 transition-all duration-500 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/0 to-indigo-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="w-14 h-14 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500 relative z-10">
                             <i class="fa-solid fa-laptop-medical"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Service Laptop / PC</h3>
-                        <p class="text-gray-500 leading-relaxed text-sm sm:text-base">
-                            Layanan install ulang Windows, upgrade RAM & SSD, bersihkan debu kipas, ganti thermal paste, perbaikan engsel rusak, hingga masalah motherboard.
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 relative z-10">Service Laptop / PC</h3>
+                        <p class="text-slate-500 leading-relaxed text-sm relative z-10">
+                            Install ulang Windows, upgrade RAM & SSD, bersihkan debu kipas, ganti thermal paste, hingga masalah motherboard.
                         </p>
                     </div>
                     
                     <!-- Card 6: Agen Pulsa -->
-                    <div class="group bg-white p-8 rounded-[2rem] shadow-card hover:shadow-card-hover border border-gray-100 hover:border-teal-200 transition-all duration-300 hover:-translate-y-2 cursor-pointer relative overflow-hidden bg-gradient-to-br from-white to-teal-50/30">
-                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-teal-50 rounded-full group-hover:scale-150 transition-transform duration-500 ease-in-out -z-10"></div>
-                        <div class="w-16 h-16 bg-white text-teal-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm border border-teal-100 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                    <div class="group bg-slate-900 p-8 rounded-[2rem] shadow-soft hover:shadow-xl hover:shadow-teal-500/20 border border-slate-800 transition-all duration-500 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-transparent"></div>
+                        <div class="w-14 h-14 bg-teal-500/20 text-teal-400 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-teal-500 group-hover:text-white transition-all duration-500 relative z-10 border border-teal-500/30">
                             <i class="fa-solid fa-users-viewfinder"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">Pendaftaran Agen Pulsa</h3>
-                        <p class="text-gray-500 leading-relaxed text-sm sm:text-base mb-4">
-                            Ingin punya penghasilan tambahan? Bergabunglah menjadi agen kami! Harga modal bersaing, transaksi lancar 24 jam, pendaftaran mudah & gratis.
+                        <h3 class="text-xl font-bold text-white mb-3 relative z-10">Pendaftaran Agen Pulsa</h3>
+                        <p class="text-slate-400 leading-relaxed text-sm mb-5 relative z-10">
+                            Ingin punya penghasilan tambahan? Bergabunglah menjadi agen kami! Harga bersaing & pendaftaran gratis.
                         </p>
-                        <a href="#kontak" class="inline-flex items-center text-teal-600 font-bold group-hover:text-teal-700">
-                            Daftar Sekarang <i class="fa-solid fa-arrow-right-long ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                        <a href="https://mitra.buylink.id/signup?ref=FARKHX" class="inline-flex items-center text-teal-400 text-sm font-bold group-hover:text-teal-300 relative z-10">
+                            Daftar Sekarang <i class="fa-solid fa-arrow-right-long ml-2 transform group-hover:translate-x-1.5 transition-transform"></i>
                         </a>
                     </div>
 
@@ -250,19 +323,23 @@
             </div>
         </section>
 
-        <!-- 4. CTA Banner Section -->
-        <section class="py-12 bg-bgLight">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="bg-gradient-to-r from-primary-600 to-primary-700 rounded-3xl p-8 sm:p-12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
-                    <!-- Background graphic -->
-                    <i class="fa-brands fa-whatsapp absolute -right-10 -bottom-10 text-[15rem] text-white opacity-10 -rotate-12"></i>
+        <!-- 4. CTA Banner Section (Dark Premium Mode) -->
+        <section class="py-12 sm:py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-slate-900 rounded-[2.5rem] p-10 sm:p-14 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10 relative overflow-hidden border border-slate-800">
+                    <!-- Modern Abstract Blur Orbs -->
+                    <div class="absolute top-0 left-0 w-72 h-72 bg-primary-600 rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-pulse"></div>
+                    <div class="absolute bottom-0 right-0 w-72 h-72 bg-secondary-500 rounded-full mix-blend-screen filter blur-[100px] opacity-20"></div>
                     
-                    <div class="relative z-10 text-center md:text-left">
-                        <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">Hp Anda Bermasalah?</h3>
-                        <p class="text-blue-100 text-lg">Konsultasikan keluhan kerusakan HP atau Laptop Anda gratis!</p>
+                    <div class="relative z-10 text-center lg:text-left max-w-2xl">
+                        <span class="inline-block py-1 px-3 rounded-full bg-slate-800 text-slate-300 font-semibold tracking-widest uppercase text-xs mb-4 border border-slate-700">
+                            Konsultasi Gratis
+                        </span>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">Handphone Anda Bermasalah?</h3>
+                        <p class="text-slate-400 text-lg sm:text-xl font-light">Tanyakan langsung keluhan kerusakan HP atau Laptop Anda kepada teknisi handal kami sekarang juga.</p>
                     </div>
                     
-                    <a href="https://wa.me/6285825444030" target="_blank" class="relative z-10 flex-shrink-0 bg-white hover:bg-gray-50 text-primary-600 font-bold text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-3">
+                    <a href="https://wa.me/6285825444030" target="_blank" class="relative z-10 flex-shrink-0 bg-white hover:bg-slate-50 text-slate-900 font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3">
                         <i class="fa-brands fa-whatsapp text-2xl text-green-500"></i> Hubungi Teknisi
                     </a>
                 </div>
@@ -272,63 +349,67 @@
     </main>
 
     <!-- 5. Footer -->
-    <footer id="kontak" class="bg-white border-t border-gray-200 pt-16 pb-8 mt-auto">
+    <footer id="kontak" class="bg-slate-50 border-t border-slate-200 pt-20 pb-8 mt-auto">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
                 
                 <!-- Brand Info -->
                 <div class="col-span-1">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 rounded-full overflow-hidden shadow-sm border border-gray-100 bg-white flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-white flex items-center justify-center">
                             <img src="https://i.ibb.co.com/Lz9Hz3Hz/20260811-081242.png" alt="Logo Noura Cell" class="w-full h-full object-cover">
                         </div>
-                        <span class="font-extrabold text-2xl text-gray-900">
-                            NOURA <span class="text-primary-600">CELL</span>
+                        <span class="font-extrabold text-2xl tracking-tight text-slate-900">
+                            NOURA<span class="text-primary-600">CELL</span>
                         </span>
                     </div>
-                    <p class="text-gray-500 mb-6 leading-relaxed">
+                    <p class="text-slate-500 mb-8 leading-relaxed text-sm">
                         Pusat layanan service profesional, ganti LCD, penjualan pulsa, token listrik, dan aksesoris Handphone terlengkap dan terpercaya.
                     </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-primary-50 hover:text-primary-600 transition-colors border border-gray-100">
-                            <i class="fa-brands fa-facebook-f"></i>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-600 hover:bg-primary-600 hover:text-white transition-all duration-300 border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1">
+                            <i class="fa-brands fa-facebook-f text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-primary-50 hover:text-primary-600 transition-colors border border-gray-100">
-                            <i class="fa-brands fa-instagram"></i>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-600 hover:bg-primary-600 hover:text-white transition-all duration-300 border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1">
+                            <i class="fa-brands fa-instagram text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-primary-50 hover:text-primary-600 transition-colors border border-gray-100">
-                            <i class="fa-solid fa-map-location-dot"></i>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-600 hover:bg-primary-600 hover:text-white transition-all duration-300 border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-1">
+                            <i class="fa-solid fa-map-location-dot text-sm"></i>
                         </a>
                     </div>
                 </div>
                 
                 <!-- Links -->
                 <div>
-                    <h4 class="font-bold text-gray-900 mb-6 uppercase tracking-wider text-sm">Layanan Kami</h4>
+                    <h4 class="font-bold text-slate-900 mb-6 uppercase tracking-widest text-xs">Layanan Kami</h4>
                     <ul class="space-y-4">
-                        <li><a href="#layanan" class="text-gray-500 hover:text-primary-600 font-medium transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-xs"></i> Service HP & Laptop</a></li>
-                        <li><a href="#layanan" class="text-gray-500 hover:text-primary-600 font-medium transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-xs"></i> Pulsa & Token Listrik</a></li>
-                        <li><a href="#layanan" class="text-gray-500 hover:text-primary-600 font-medium transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-xs"></i> Transfer & Top Up E-Wallet</a></li>
-                        <li><a href="#layanan" class="text-gray-500 hover:text-primary-600 font-medium transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-xs"></i> Pendaftaran Agen Pulsa</a></li>
+                        <li><a href="#layanan" class="text-slate-500 hover:text-primary-600 text-sm font-medium transition-colors flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-primary-200 group-hover:bg-primary-600 transition-colors"></span> Service HP & Laptop</a></li>
+                        <li><a href="#layanan" class="text-slate-500 hover:text-primary-600 text-sm font-medium transition-colors flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-primary-200 group-hover:bg-primary-600 transition-colors"></span> Pulsa & Token Listrik</a></li>
+                        <li><a href="#layanan" class="text-slate-500 hover:text-primary-600 text-sm font-medium transition-colors flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-primary-200 group-hover:bg-primary-600 transition-colors"></span> Transfer & Top Up E-Wallet</a></li>
+                        <li><a href="#layanan" class="text-slate-500 hover:text-primary-600 text-sm font-medium transition-colors flex items-center gap-2 group"><span class="w-1.5 h-1.5 rounded-full bg-primary-200 group-hover:bg-primary-600 transition-colors"></span> Pendaftaran Agen Pulsa</a></li>
                     </ul>
                 </div>
                 
                 <!-- Contact Info -->
                 <div>
-                    <h4 class="font-bold text-gray-900 mb-6 uppercase tracking-wider text-sm">Kontak & Lokasi</h4>
+                    <h4 class="font-bold text-slate-900 mb-6 uppercase tracking-widest text-xs">Kontak & Lokasi</h4>
                     <ul class="space-y-4">
-                        <li class="flex items-start gap-4 text-gray-500">
-                            <i class="fa-solid fa-location-dot mt-1 text-primary-500 bg-primary-50 p-2 rounded-lg"></i>
-                            <span class="leading-relaxed">Jl. Sultan hasanuddin Kel. Watuliandu
-                               
-                            </span>
+                        <li class="flex items-start gap-4 text-slate-500 text-sm">
+                            <div class="mt-0.5 w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0 shadow-sm text-primary-500">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <span class="leading-relaxed">Jl. Sultan hasanuddin Kel. Watuliandu</span>
                         </li>
-                        <li class="flex items-center gap-4 text-gray-500">
-                            <i class="fa-brands fa-whatsapp text-green-500 bg-green-50 p-2 rounded-lg text-lg"></i>
+                        <li class="flex items-center gap-4 text-slate-500 text-sm">
+                            <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0 shadow-sm text-green-500">
+                                <i class="fa-brands fa-whatsapp text-lg"></i>
+                            </div>
                             <a href="https://wa.me/6285825444030" class="hover:text-primary-600 font-medium transition-colors">085825444030</a>
                         </li>
-                        <li class="flex items-center gap-4 text-gray-500">
-                            <i class="fa-solid fa-clock text-secondary-500 bg-yellow-50 p-2 rounded-lg"></i>
+                        <li class="flex items-center gap-4 text-slate-500 text-sm">
+                            <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0 shadow-sm text-secondary-500">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
                             <span class="font-medium">Buka Setiap Hari (08:00 - 23:00)</span>
                         </li>
                     </ul>
@@ -337,19 +418,33 @@
             </div>
             
             <!-- Bottom Footer -->
-            <div class="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-                <p class="text-gray-400 text-sm font-medium">
+            <div class="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+                <p class="text-slate-400 text-xs font-medium tracking-wide">
                     &copy; 2026 NOURA CELL. All Rights Reserved.
                 </p>
-                <div class="text-gray-400 text-sm font-medium">
+                <div class="text-slate-400 text-xs font-medium tracking-wide">
                     Solusi Tepat, Layanan Hebat!
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Interactive Scripts -->
+    <!-- Interactive Scripts (TIDAK ADA YANG DIUBAH) -->
     <script>
+        // --- PRELOADER SCRIPT ---
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            // Sedikit jeda agar animasi loading terlihat oleh user (500ms)
+            setTimeout(function() {
+                preloader.classList.add('preloader-hide');
+                // Hapus element dari DOM setelah transisi CSS selesai (600ms)
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                }, 600);
+            }, 500); 
+        });
+        // ------------------------
+
         // Mobile Menu Toggle Logic
         const btn = document.getElementById('mobile-menu-button');
         const menu = document.getElementById('mobile-menu');
