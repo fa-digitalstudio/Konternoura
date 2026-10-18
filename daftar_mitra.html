@@ -69,7 +69,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            overflow: hidden;
+            overflow: hidden; /* DIKEMBALIKAN KE HIDDEN AGAR TIDAK BLANK */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -167,25 +167,39 @@
         </header>
 
         <!-- Links Container -->
-        <nav class="w-full flex flex-col gap-4">
+        <nav class="w-full flex flex-col gap-4 mt-2">
             
             <!-- Link 1: Website -->
-            <a href="https://mitra.buylink.id/signup?ref=FARKHX" class="glass-btn p-4 group">
-                <i class="fas fa-globe btn-icon"></i>
-                <span class="font-medium tracking-wide">GABUNG JADI MITRA</span>
-            </a>
+            <div class="relative w-full">
+                <!-- Badge Cuan (Animated) -->
+                <div class="absolute -top-3 -right-2 bg-gradient-to-r from-green-400 to-emerald-600 text-white text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-[0_0_15px_rgba(52,211,153,0.6)] border border-green-200/50 animate-bounce z-20 flex items-center gap-1.5 pointer-events-none">
+                    <i class="fas fa-sack-dollar"></i>+ CUAN EXTRA
+                </div>
+                <a href="https://mitra.buylink.id/signup?ref=FARKHX" class="glass-btn w-full p-4 group">
+                    <i class="fas fa-globe btn-icon"></i>
+                    <span class="font-medium tracking-wide">GABUNG JADI MITRA</span>
+                </a>
+            </div>
 
             <!-- Link 2: Portfolio -->
-            <a href="https://buylink.id/noura_cell" class="glass-btn p-4 group">
-                <i class="fas fa-briefcase btn-icon"></i>
-                <span class="font-medium tracking-wide">BELI PULSA MURAH</span>
-            </a>
+            <div class="relative w-full">
+                <!-- Badge Promo (Animated) -->
+                <div class="absolute -top-3 -right-2 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-[0_0_15px_rgba(244,63,94,0.6)] border border-red-200/50 animate-pulse z-20 flex items-center gap-1.5 pointer-events-none">
+                    <i class="fas fa-fire"></i>PROMO MURAH
+                </div>
+                <a href="https://buylink.id/noura_cell" class="glass-btn w-full p-4 group">
+                    <i class="fas fa-briefcase btn-icon"></i>
+                    <span class="font-medium tracking-wide">BELI PULSA MURAH</span>
+                </a>
+            </div>
 
             <!-- Link 3: WhatsApp / Channel -->
-            <a href="https://whatsapp.com/channel/0029Vb9V3eLLSmbTNXEio91p" class="glass-btn p-4 group">
-                <i class="fab fa-whatsapp btn-icon"></i>
-                <span class="font-medium tracking-wide">CHANNEL WHATSAPP</span>
-            </a>
+            <div class="relative w-full">
+                <a href="https://whatsapp.com/channel/0029Vb9V3eLLSmbTNXEio91p" class="glass-btn w-full p-4 group">
+                    <i class="fab fa-whatsapp btn-icon"></i>
+                    <span class="font-medium tracking-wide">CHANNEL WHATSAPP</span>
+                </a>
+            </div>
 
         </nav>
 
